@@ -1,0 +1,22 @@
+services:
+  sender:
+    ports:
+     - 44044:44044
+    build:
+      context: ./sender
+      dockerfile: ./dockerfile
+    depends_on:
+      redis:
+        condition: service_healthy
+  
+  redis:
+    image: redis:latest
+    ports:
+     - "6379:6379"
+    environment:
+      REDIS_PASSWORD: "password"
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "$REDIS_PASSWORD", "ping"]
+      interval: 30s
+      timeout: 30s
+      retries: 5
