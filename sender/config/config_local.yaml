@@ -1,2 +1,4 @@
 grpc:
   port: 44044
+redis:
+  address: "redis:6379"

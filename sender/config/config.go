@@ -11,11 +11,16 @@ import (
 )
 
 type Config struct {
-	GRPC GRPCConfig `yaml:"grpc"`
+	GRPC  GRPCConfig  `yaml:"grpc"`
+	Redis RedisConfig `yaml:"redis"`
 }
 
 type GRPCConfig struct {
 	Port int `yaml:"port"`
+}
+
+type RedisConfig struct {
+	Address string `yaml:"address"`
 }
 
 func parseFlags() string {
