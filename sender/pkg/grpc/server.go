@@ -11,9 +11,7 @@ import (
 	"google.golang.org/grpc/reflection"
 )
 
-func CreateAndRunServer(pubSubService usecase.PubSub, port int, errChan chan error) {
-	// Server API
-	serverAPI := senderAPI.CreateServerAPI(pubSubService)
+func CreateAndRunServer(serverAPI *senderAPI.ServerAPI, pubSubService usecase.PubSub, port int, errChan chan error) {
 
 	// Creating server
 	listener, err := net.Listen("tcp", fmt.Sprintf(":%d", port))
