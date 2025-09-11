@@ -7,6 +7,7 @@ import (
 	"syscall"
 
 	"github.com/tousart/sender/config"
+	senderAPI "github.com/tousart/sender/grpc/api"
 	pkgGRPC "github.com/tousart/sender/pkg/grpc"
 	redisRepo "github.com/tousart/sender/repository/redis"
 	"github.com/tousart/sender/usecase/service"
@@ -27,11 +28,14 @@ func main() {
 
 	// Usecase
 	pubSubService := service.NewPubSub(pubSubRepo)
-	pubSubService.StartMessageSender()
+
+	// Server API
+	serverAPI := senderAPI.CreateServerAPI(pubSubService)
+	serverAPI.StartMessageSender()
 
 	// Run
 	errChan := make(chan error)
-	pkgGRPC.CreateAndRunServer(pubSubService, cfg.GRPC.Port, errChan)
+	pkgGRPC.CreateAndRunServer(serverAPI, pubSubService, cfg.GRPC.Port, errChan)
 
 	select {
 	case <-signalChan:

@@ -48,6 +48,13 @@ func (ps *PubSubRepo) SubscribeToChat(stream senderv1.Sender_SendMessageServer, 
 			return err
 		}
 	}
+
+	if streamsMap, ok := ps.chatSubscribers[chatID]; ok {
+		log.Println(streamsMap)
+	} else {
+		log.Printf("%s is empty\n", chatID)
+	}
+
 	return nil
 }
 
@@ -72,6 +79,13 @@ func (ps *PubSubRepo) UnsubscribeFromChat(chatID, userID string) {
 			return
 		}
 	}
+
+	if streamsMap, ok := ps.chatSubscribers[chatID]; ok {
+		log.Println(streamsMap)
+	} else {
+		log.Printf("%s is empty\n", chatID)
+	}
+
 }
 
 func (ps *PubSubRepo) PublishMessage(chatID string, payload []byte) error {
